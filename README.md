@@ -1,35 +1,106 @@
 # Flight Delay Prediction System
 
-## Overview
-This mini project predicts flight delays using Machine Learning and Deep Learning.
+## Project Overview
+Flight Delay Prediction System is a machine learning based web application developed using Python and Streamlit to predict possible flight delays based on various factors such as weather conditions, air traffic congestion, route history and operational parameters.
+
+The system analyzes input parameters and predicts delay time using a trained Random Forest model. It also provides interactive graphs for visualization and analysis.
+
+## Objectives
+- Predict flight delays accurately
+- Analyze factors affecting delays
+- Reduce uncertainty in flight operations
+- Provide visual analysis using graphs
 
 ## Features
 - Flight delay prediction
-- Data preprocessing
-- Feature engineering
-- LSTM model prediction
+- Weather impact analysis
+- Traffic impact analysis
+- Correlation heatmap
+- Interactive Streamlit interface
+- Machine learning based prediction
 
 ## Technologies Used
 - Python
-- Pandas
+- Streamlit
 - Scikit-learn
-- TensorFlow
-- Flask
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
 
 ## Project Structure
-app/ - Application code  
-dataset/ - Dataset  
-model/ - Trained models  
-src/ - Source code modules  
+mini-pro/
+│
+├── app/
+│   └── app.py
+│
+├── dataset/
+│   └── flight_delay_dataset_200.csv
+│
+├── model/
+│   └── flight_delay_model.pkl
+│
+├── requirements.txt
+└── README.md
 
-## How to Run
+
+## Installation
+Clone repository:
 ```bash
-pip install -r requirement.txt
-python app/app.py
+git clone https://github.com/yourusername/flight-delay-prediction.git
+cd flight-delay-prediction
+```
+
+Create virtual environment:
+```bash
+python -m venv venv
+```
+
+Activate environment:
+
+
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Run Project
+```bash
 streamlit run app/app.py
 ```
 
+## Output
+Open browser:
+http://localhost:8501
+
+## Input Parameters Used
+- Airline
+- Origin
+- Destination
+- Aircraft Type
+- Temperature
+- Wind Speed
+- Visibility
+- Precipitation
+- Air Traffic
+
+## Prediction Graphs
+- Temperature vs Delay
+- Traffic Impact Analysis
+- Weather Factors Analysis
+- Correlation Heatmap
+
+## Machine Learning Model
+Random Forest Regressor is used for prediction.
+
+## Future Enhancements
+- Real-time airport data integration
+- Deep Learning models
+- Live flight API integration
+- Deployment in cloud
+- Improved prediction accuracy
+
 ## Team Member
 Ganeshkumar S
-Sivakumar R
-Mohamed Aman 
+Siva kumar R
+Mohamed Aman S
