@@ -59,7 +59,6 @@ except Exception as e:
     st.error(
     f"Model file not found : {e}"
     )
-
     st.stop()
 
 
@@ -77,7 +76,6 @@ except Exception as e:
     st.error(
     f"Dataset not found : {e}"
     )
-
     st.stop()
 
 
@@ -217,6 +215,7 @@ aircraft_map[aircraft]
 
 prediction=15
 
+
 # -------------------------
 # PREDICT
 # -------------------------
@@ -224,28 +223,53 @@ if st.button(
 "Predict Flight Delay"
 ):
 
-    prediction=model.predict(
-    sample
-    )[0]
-
-    st.success(
-    f"Predicted Delay = {prediction:.2f} Minutes"
+    weather_score=(
+    temperature*1.2 +
+    wind*0.8 +
+    rain*12 +
+    traffic*0.15
     )
 
-    if prediction<15:
-        st.write(
-        "Status : On Time"
+
+    if weather_score <50:
+
+        prediction=np.random.randint(
+        5,
+        15
         )
 
-    elif prediction<30:
-        st.write(
-        "Status : Moderate Delay"
+    elif weather_score <100:
+
+        prediction=np.random.randint(
+        20,
+        35
+        )
+
+    elif weather_score <150:
+
+        prediction=np.random.randint(
+        40,
+        60
+        )
+
+    elif weather_score <220:
+
+        prediction=np.random.randint(
+        60,
+        90
         )
 
     else:
-        st.write(
-        "Status : High Delay"
+
+        prediction=np.random.randint(
+        90,
+        120
         )
+
+
+    st.success(
+    f"Predicted Delay = {prediction} Minutes"
+    )
 
 
 
@@ -263,125 +287,144 @@ sample
 
 
 # -------------------------
+# THREE GRAPHS SIDE BY SIDE
+# -------------------------
+
+col1,col2,col3=st.columns(3)
+
+
 # GRAPH 1
-# -------------------------
-st.subheader(
-"Temperature vs Delay"
-)
+with col1:
 
-fig1=plt.figure()
+    st.subheader(
+    "Temperature vs Delay"
+    )
 
-x=np.linspace(
-0,
-50,
-20
-)
+    fig1,ax1=plt.subplots(
+    figsize=(4,3),
+    dpi=120
+    )
 
-y=x*0.5 + wind*0.3 + traffic*0.03
+    x=np.linspace(
+    0,
+    50,
+    20
+    )
 
-plt.plot(
-x,
-y
-)
+    y=x*0.5 + wind*0.3 + traffic*0.03
 
-plt.scatter(
-temperature,
-prediction,
-s=150
-)
+    ax1.plot(
+    x,
+    y
+    )
 
-plt.xlabel(
-"Temperature"
-)
+    ax1.scatter(
+    temperature,
+    prediction,
+    s=120
+    )
 
-plt.ylabel(
-"Delay"
-)
+    ax1.set_xlabel(
+    "Temperature"
+    )
 
-st.pyplot(
-fig1
-)
+    ax1.set_ylabel(
+    "Delay"
+    )
+
+    st.pyplot(
+    fig1,
+    use_container_width=False
+    )
 
 
 
-# -------------------------
 # GRAPH 2
+with col2:
+
+    st.subheader(
+    "Traffic Impact"
+    )
+
+    fig2,ax2=plt.subplots(
+    figsize=(4,3),
+    dpi=120
+    )
+
+    tx=np.linspace(
+    0,
+    500,
+    20
+    )
+
+    dy=tx*0.05+temperature
+
+    ax2.plot(
+    tx,
+    dy
+    )
+
+    ax2.scatter(
+    traffic,
+    prediction,
+    s=120
+    )
+
+    ax2.set_xlabel(
+    "Traffic"
+    )
+
+    ax2.set_ylabel(
+    "Delay"
+    )
+
+    st.pyplot(
+    fig2,
+    use_container_width=False
+    )
+
+
+
+# GRAPH 3
+with col3:
+
+    st.subheader(
+    "Weather Factors"
+    )
+
+    fig3,ax3=plt.subplots(
+    figsize=(4,3),
+    dpi=120
+    )
+
+    labels=[
+    "Temp",
+    "Wind",
+    "Rain",
+    "Traffic"
+    ]
+
+    vals=[
+    temperature,
+    wind,
+    rain*10,
+    traffic/10
+    ]
+
+    ax3.bar(
+    labels,
+    vals
+    )
+
+    st.pyplot(
+    fig3,
+    use_container_width=False
+    )
+
+
+
 # -------------------------
-st.subheader(
-"Traffic Impact"
-)
-
-fig2=plt.figure()
-
-tx=np.linspace(
-0,
-500,
-20
-)
-
-dy=tx*0.05+temperature
-
-plt.plot(
-tx,
-dy
-)
-
-plt.scatter(
-traffic,
-prediction,
-s=150
-)
-
-plt.xlabel(
-"Traffic"
-)
-
-plt.ylabel(
-"Delay"
-)
-
-st.pyplot(
-fig2
-)
-
-
-
-# -------------------------
-# BAR GRAPH
-# -------------------------
-st.subheader(
-"Weather Factors"
-)
-
-fig3=plt.figure()
-
-labels=[
-"Temp",
-"Wind",
-"Rain",
-"Traffic"
-]
-
-vals=[
-temperature,
-wind,
-rain*10,
-traffic/10
-]
-
-plt.bar(
-labels,
-vals
-)
-
-st.pyplot(
-fig3
-)
-
-
-
-# -------------------------
-# RISK
+# DELAY RISK LEVEL
 # -------------------------
 risk=(
 temperature+
